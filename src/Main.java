@@ -1,8 +1,19 @@
 import java.util.*;
 import java.util.concurrent.*;
 
+/**
+ * Entry point for running automated test cases for the LonghornNetwork project.
+ * This class is used to load predefined student data, execute grading tests,
+ * and display results for each scenario. Students do not need to modify this file.
+ */
 // Main.java - Self-contained testing & grading with multiple built‑in test cases.
 public class Main {
+    /**
+     * Starts the test harness, builds predefined test cases, and grades each one.
+     * The final output prints score breakdowns and an average score across all tests.
+     *
+     * @param args command-line arguments (not used in this program)
+     */
     public static void main(String[] args) {
         // Create a list of test cases.
         List<List<UniversityStudent>> testCases = new ArrayList<>();
@@ -31,7 +42,13 @@ public class Main {
         System.out.println("\n========================================");
         System.out.println("Average Score across all test cases: " + (overallScore / count));
     }
-
+    /**
+     * Builds a dataset consisting of two separate student groups.
+     * One group contains four students with mutual roommate preferences,
+     * and the second group contains a pair of compatible students.
+     *
+     * @return a list of fully constructed UniversityStudent objects
+     */
     // Test Case 1: Two groups (Group 1 with four students having mutual preferences, Group 2 with a pair)
     public static List<UniversityStudent> generateTestCase1() {
         List<UniversityStudent> students = new ArrayList<>();
@@ -66,7 +83,13 @@ public class Main {
 
         return students;
     }
-
+    /**
+     * Builds a dataset of three students where one has a previous internship
+     * at "DummyCompany", used to test ReferralPathFinder's ability to return
+     * a valid referral chain.
+     *
+     * @return a list of UniversityStudent objects
+     */
     // Test Case 2: Three students in which one has "DummyCompany" as a previous internship.
     // This test case should yield a referral path when searching for "DummyCompany".
     public static List<UniversityStudent> generateTestCase2() {
@@ -88,6 +111,13 @@ public class Main {
         return students;
     }
 
+    /**
+     * Builds a dataset of three students, where one has no roommate preference.
+     * Correct Gale-Shapley behavior should result in one valid pair and one
+     * unpaired student.
+     *
+     * @return a list of UniversityStudent objects
+     */
     // Test Case 3: Three students where one has no roommate preferences.
     // Two of them can be paired and one remains unpaired.
     public static List<UniversityStudent> generateTestCase3() {
@@ -109,6 +139,16 @@ public class Main {
         return students;
     }
 
+    /**
+     * Grades functionality for a given test case based on five categories:
+     * StudentGraph structure, Gale-Shapley roommate matching, concurrency
+     * correctness, accurate referral pathfinding, and overall integration.
+     * Scores are printed for transparency and debugging.
+     *
+     * @param students list of students participating in the test case
+     * @param testCaseNumber an identifier used in printed output
+     * @return total score earned for the test case
+     */
     /**
      * Automated test suite for grading a given test case.
      * Accepts a list of UniversityStudent objects and a testCaseNumber (for output clarity).
@@ -147,7 +187,7 @@ public class Main {
 
         // Test GaleShapley (20 pts)
         try {
-            GaleShapley.assignRoommates(students);
+            GaleShapley.setAssignedRoommate(students);
             // Count unpaired students. In an even-sized group, there should be none;
             // in odd-sized groups, at most one can remain unpaired.
             int unpairedCount = 0;
@@ -168,6 +208,7 @@ public class Main {
         } catch (Exception e) {
             System.out.println("Test: GaleShapley failed: " + e.getMessage());
         }
+
 
         // Test FriendRequestThread and ChatThread with semaphores (20 pts)
         try {

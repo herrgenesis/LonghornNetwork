@@ -1,0 +1,28 @@
+@startuml LonghornStateDiagram
+title Longhorn Network - State Diagram (Medium Detail)
+
+/' Initial system idle '/
+[*] --> ProgramStarted
+
+ProgramStarted --> DataLoading : Main.java starts\ninput file selected
+DataLoading --> StudentsParsed : DataParser.parseStudents()
+DataLoading --> [*] : File missing / parse error
+
+StudentsParsed --> GraphConstructed : new StudentGraph(students)
+GraphConstructed --> RoommateMatching : GaleShapley.assignRoommates()
+
+RoommateMatching --> PodsFormed : new PodFormation(graph)\nformPods()
+RoommateMatching --> UnpairedStudents : Some students remain unpaired
+
+PodsFormed --> ThreadsRunning : FriendRequestThread + ChatThread\nExecutorService.start()
+
+ThreadsRunning --> ReferralPathSearching : new ReferralPathFinder(graph)
+ReferralPathSearching --> ReferralPathFound : Path exists
+ReferralPathSearching --> NoPathFound : Path does not exist
+
+ReferralPathFound --> ProgramEnd : Display output
+NoPathFound --> ProgramEnd
+
+ProgramEnd --> [*]
+
+@enduml

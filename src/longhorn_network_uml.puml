@@ -1,0 +1,119 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' =====================
+' Abstract Base Class
+' =====================
+abstract class Student {
+    - String name
+    - int age
+    - String gender
+    - int year
+    - String major
+    - double gpa
+    - List<String> roommatePreferences
+    - List<String> previousInternships
+
+    + int calculateConnectionStrength(Student other)
+}
+
+' =====================
+' Concrete Student Class
+' =====================
+class UniversityStudent {
+    ' TODO: constructor and fields not defined yet
+}
+
+Student <|-- UniversityStudent
+
+
+' =====================
+' Parser Class
+' =====================
+class DataParser {
+    + List<UniversityStudent> parseStudents(String filename)
+}
+
+
+' =====================
+' Graph Class
+' =====================
+class StudentGraph {
+    - Map<UniversityStudent, List<Edge>> adjacencyList
+
+    + StudentGraph(List<UniversityStudent> students)
+    + void addEdge(UniversityStudent a, UniversityStudent b, int weight)
+    + List<Edge> getNeighbors(UniversityStudent student)
+    + List<UniversityStudent> getAllNodes()
+
+    class Edge {
+        + UniversityStudent neighbor
+        + int weight
+    }
+
+
+
+' =====================
+' Algorithms
+' =====================
+class GaleShapley {
+    + void assignRoommates(List<UniversityStudent> students)
+}
+
+class PodFormation {
+    + PodFormation(StudentGraph graph)
+    + void formPods(int podSize)
+}
+
+class ReferralPathFinder {
+    + ReferralPathFinder(StudentGraph graph)
+    + List<UniversityStudent> findReferralPath(UniversityStudent start, String targetCompany)
+}
+
+
+' =====================
+' Multithreaded Classes
+' =====================
+class FriendRequestThread {
+    + FriendRequestThread(UniversityStudent sender, UniversityStudent receiver)
+    + void run()
+}
+
+class ChatThread {
+    + ChatThread(UniversityStudent sender, UniversityStudent receiver, String message)
+    + void run()
+}
+
+FriendRequestThread ..> UniversityStudent
+ChatThread ..> UniversityStudent
+
+
+' =====================
+' Main Driver
+' =====================
+class Main {
+    + main(String[] args)
+    + List<UniversityStudent> generateTestCase1()
+    + List<UniversityStudent> generateTestCase2()
+    + List<UniversityStudent> generateTestCase3()
+    + int gradeLab(List<UniversityStudent> students, int testCaseNumber)
+}
+
+Main ..> UniversityStudent
+Main ..> StudentGraph
+Main ..> GaleShapley
+Main ..> ReferralPathFinder
+Main ..> PodFormation
+
+
+' =====================
+' Dependencies and Associations
+' =====================
+
+DataParser ..> UniversityStudent
+StudentGraph o--> UniversityStudent
+StudentGraph *-- Edge
+GaleShapley ..> UniversityStudent
+PodFormation ..> StudentGraph
+ReferralPathFinder ..> StudentGraph
+@enduml

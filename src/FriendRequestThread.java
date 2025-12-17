@@ -1,10 +1,21 @@
+/**
+ * Thread for simulating friend requests between students.
+ */
 public class FriendRequestThread implements Runnable {
+
+    private UniversityStudent sender;
+    private UniversityStudent receiver;
+
     public FriendRequestThread(UniversityStudent sender, UniversityStudent receiver) {
-        // Constructor
+        this.sender = sender;
+        this.receiver = receiver;
     }
 
+    /**
+     * Logs the friend request to console.
+     */
     @Override
     public void run() {
-        // Method signature only
+        System.out.println(sender.name + " sent a friend request to " + receiver.name);
     }
 }
